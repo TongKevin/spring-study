@@ -19,53 +19,66 @@ import com.kevin.mvcdemo.service.CourseService;
 
 @Controller
 @RequestMapping("/courses")
-public class CourseController {
+public class CourseController
+{
 	private static Logger logger = LoggerFactory
 			.getLogger(CourseController.class);
-
+	
 	private CourseService courseService;
-
+	
 	@Autowired
-	public void setCourseService(CourseService courseService) {
+	public void setCourseService(CourseService courseService)
+	{
 		this.courseService = courseService;
 	}
-
+	
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
-	public String viewCourse(@RequestParam("courseId") Integer courseId,
-			Model model) {
-
+	public String viewCourse(@RequestParam("courseId")
+	Integer courseId, Model model)
+	{
+		
 		logger.info("in view course, courseid={}", courseId);
-
+		
 		Course course = courseService.getCourseById(courseId);
-
+		
 		model.addAttribute(course);
-
+		
 		return "course_overview";
 	}
-
+	
 	@RequestMapping(value = "/view2/{courseId}", method = RequestMethod.GET)
-	public String viewCourese2(@PathVariable("courseId") Integer courseId,
-			Map<String, Object> model) {
+	public String viewCourese2(@PathVariable("courseId")
+	Integer courseId, Map<String, Object> model)
+	{
 		logger.info("in view course2, courseid={}", courseId);
-
+		
 		Course course = courseService.getCourseById(courseId);
-
+		
 		model.put("course", course);
-
+		
 		return "course_overview";
 	}
-
+	
 	@RequestMapping(value = "view3", method = RequestMethod.GET)
-	public String viewCourse3(HttpServletRequest request) {
-
+	public String viewCourse3(HttpServletRequest request)
+	{
+		
 		logger.info("in view course3, courseid={}",
 				request.getParameter("courseId"));
-
+		
 		Course course = courseService.getCourseById(Integer.valueOf(request
 				.getParameter("courseId")));
-
+		
 		request.setAttribute("course", course);
 		
 		return "course_overview";
 	}
+	
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET, params = "add")
+	public String createCourse()
+	{
+		return "course_admin/edit";
+	}
+	
 }
